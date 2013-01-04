@@ -69,6 +69,7 @@
         model = $($(defaults.model)[index]),
         identifier = defaults.prefix + "-" + index;
       defaults.max -= 1;
+      methods.updateManager.apply(this, [defaults.max]);
       if ($(model).find("input[name$='-id']").val()) {
         $(model).append(
           "<input type='hidden' name='" + identifier + "-DELETE' " +
@@ -78,7 +79,6 @@
       } else {
         $(model).remove();
       }
-      methods.updateManager.apply(this, [defaults.max]);
       $(defaults.model + ":not(.deleted)").each(methods.reindex);
     },
     updateManager: function(numForms) {
