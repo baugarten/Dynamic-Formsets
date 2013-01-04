@@ -1,11 +1,16 @@
 /**
- * Used to manage a dynamic formset in django.
- * Basically there is a container that contains a set of
- * related models. This plugin handles updating the manager form
- * when adding and removing models from the formset
- *
+ * @fileOverview jquery-dynamic-formset, manage django formsets
+ * @author <a mailto:baugarten@gmail.com>Ben Augarten</a>
+ * @version 0.0.1
+ * @license MIT | GPL | Apache 2.0, see LICENSE.txt
  */
 (function($) {
+  /* 
+   * Used to manage a dynamic formset in django.
+   * Basically there is a container that contains a set of
+   * related models. This plugin handles updating the manager form
+   * when adding and removing models from the formset
+   */
   var defaults = {
     prefix: "form", // The prefix for the formset
     model: ".formset", // A selector for each of the top level model object
