@@ -41,12 +41,18 @@ An example initial html is shown
       </div>
     </div>
 
+To use dynamicFormset for this formset, use
+
     $("#form-container").dynamicFormset({
       model: ".song",
       addWrapper: ".controls",
       addHtml: "<a class='btn btn-primary'>Add Song</a>", 
       removeWrapper: ".remove",
     });
+
+I.e. there is a form container, #form-container, and then model instances, .song
+The plugin will automatically handle adding and removing forms, adding a delete field when the remove button is clicked, and updating the manager form.
+Make sure the manager form is inside of the form-container.
 
 ## Configuration
 
