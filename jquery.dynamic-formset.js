@@ -69,7 +69,7 @@
         model = $($(defaults.model)[index]),
         identifier = defaults.prefix + "-" + index;
       defaults.max -= 1;
-      if ($(model).find("input[id$=-id]").val()) {
+      if ($(model).find("input[name$='-id']").val()) {
         $(model).append(
           "<input type='hidden' name='" + identifier + "-DELETE' " +
             "id='id_" + identifier + "-DELETE' value=1 checked='yes' />"
@@ -82,7 +82,7 @@
       $(defaults.model + ":not(.deleted)").each(methods.reindex);
     },
     updateManager: function(numForms) {
-      $(this).find("#id_" + defaults.prefix + "-TOTAL_FORMS").val(defaults.max);
+      $(this).parent().find("#id_" + defaults.prefix + "-TOTAL_FORMS").val(numForms);
     },
     makeTmpl: function() {
       defaults.tmpl = $(this).find(defaults.model + ":first").clone();
@@ -93,24 +93,25 @@
     fillTmpl: function(index) {
       return methods.reindex.apply(defaults.tmpl.clone(), [index]);
     },
+    replace: function(label, attr, difference) {
+      $(this).find(label).each(function() {
+        $(this).attr(attr, function(i, attrval) {
+          return methods.formsetReplace(attrval, difference);
+        });
+      });
+    },
     formsetReplace: function(attr, difference) {
       return attr && attr.replace(/-\d+-/g, function(n) { 
-        return "-" + (parseInt(n) + difference) + "-"; 
+        return "-" + (parseInt(n.substr(1,n.length-2)) + difference) + "-"; 
       });
     },
     reindex: function(index) {
       var oldIndex = $(this).find("." + defaults.removeClass).attr('data-index');
       if (!oldIndex) { oldIndex = 0; }
       var difference = index - oldIndex;
-      $(this).find("input").attr('name', function(i, attr) {
-        return methods.formsetReplace(attr, difference);
-      });
-      $(this).find("input").attr('id', function(i, attr) {
-        return methods.formsetReplace(attr, difference);
-      });
-      $(this).find("label").attr("for", function(i, attr) {
-        return methods.formsetReplace(attr, difference);
-      });
+      methods.replace.apply(this, ["input", "name", difference]);
+      methods.replace.apply(this, ["input", "id", difference]);
+      methods.replace.apply(this, ["label", "for", difference]);
       $(this).find("label").each(function() { 
         $(this).html($(this).html().replace(/\d+/g, function(n) { return parseInt(n) + difference; }));
       });
